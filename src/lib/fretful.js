@@ -10,8 +10,8 @@ export const strings = [
     "g3",
     "d3",
     "a2",
-    "e2"
-    ];
+    "e2",
+];
 
 /**
  *  The c pentatonic scale, with sharps notation
@@ -28,7 +28,8 @@ export const notes_sharps=[
     'g#', 
     'a',
     'a#',
-    'b'];
+    'b',
+];
 
 
 /**
@@ -46,27 +47,83 @@ export const notes_flats = [
     'ab', 
     'a',
     'bb',
-    'b'];
+    'b',
+];
 
 /**
- *  The c-minor triplets on top three and 'middle' three (2-4) strings
+ *  Triplets on top three and 'middle' three (2-4) strings
  */
-export const minor_triplets = {
-    top: [
-        "1:g4 2:d#4 3:c4",
-        "1:c5 2:g4 3:d#4",
-        "1:d#5 2:c5 3:g4"
-    ]
-}
+export const triplets = {
+    major_triplets: {
+        top: [
+            "1:e5 2:c5 3:g4",
+            "1:g4 2:e4 3:c4",
+            "1:c5 2:g4 3:e4"
+        ],
+        middle: [
+            "2:c6 3:g5 4:e5",
+            "2:e4 3:c4 4:g3",
+            "2:g5 3:e5 4:c5"
+        ]
+    },
+    minor_triplets: {
+        top: [
+            "1:eb5 2:c5 3:g4",
+            "1:g4 2:eb4 3:c4",
+            "1:c5 2:g4 3:eb4"
+        ],
+        middle: [
+            "2:c6 3:g5 4:eb5",
+            "2:eb4 3:c4 4:g3",
+            "2:g5 3:eb5 4:c5"
+        ]
+    },
+    diminished_triplets: {
+        top: [
+            "1:eb5 2:c5 3:gb4",
+            "1:gb4 2:eb4 3:c4",
+            "1:c5 2:gb4 3:eb4"
+        ],
+        middle: [
+            "2:c6 3:gb5 4:eb5",
+            "2:eb4 3:c4 4:gb3",
+            "2:gb5 3:eb5 4:c5"
+        ]
+    },
+    dominant7_triplets: {
+        top: [
+            "1:eb5 2:c5 3:g4",
+            "1:g4 2:eb4 3:c4",
+            "1:c5 2:g4 3:eb4"
+        ],
+        middle: [
+            "2:c6 3:g5 4:eb5",
+            "2:eb4 3:c4 4:g3",
+            "2:g5 3:eb5 4:c5"
+        ]
+    },
+    dominant7b5_triplets: {
+        top: [
+            "1:eb5 2:c5 3:gb4",
+            "1:gb4 2:eb4 3:c4",
+            "1:c5 2:gb4 3:eb4"
+        ],
+        middle: [
+            "2:c6 3:gb5 4:eb5",
+            "2:eb4 3:c4 4:gb3",
+            "2:gb5 3:eb5 4:c5"
+        ]
+    }
+};
 
 /**
  * Convert a number to a note/octave pair. (1 = C1)
  * @param {int} n
- * @param {boolean} sharp Should we use sharp (vs. flat) notation? Default is true.
+ * @param {boolean} sharp Should we use sharp (vs. flat) notation? Default is false.
  * @returns {string} Corresponding note in "no" notation (e.g. 'a4')
  */
 export function numberToNote(n, sharp) {
-    sharp = sharp || true;
+    sharp = sharp || false;
     let octave = Math.floor((n-1) / 12) + 1;
     let note = (n-1) % 12;
     note = sharp ? notes_sharps[note ] : notes_flats[note];
@@ -170,24 +227,25 @@ export function transpose(note, steps) {
 export function transposeAll(notes, steps, max) {
     const n  = Array.isArray(notes) ? notes : notes.split(" ")
     let result = n.map(x => transpose(x, steps)).join(" ")
-    if(max && maxFret(result) > max) {
+    while(max && maxFret(result) > max) {
         result = transposeAll(result, -12)
     }
     return(result)
 }
 
 /**
- * Tranpose a set of triplet
+ * Tranpose a set of triplets
  * @param {[string]} t An array of triplets, each in "s:no s:no s:no" format
  * @param {integer} steps How many (half) steps to transpose 
- * @param {integer} max The maximum fret for any fiven triplet. Default is 14. If any given triplet exceeds this,
+ * @param {integer} max The maximum fret for any given triplet. Default is 14. If any given triplet exceeds this,
  *                          the triplet is tranposed down one octave.
  * @returns 
  */
 export function transpose_triplets(t, steps, max=14) {
+//    let result = t.map(x=>transposeAll(x, steps, max));
     let result = t.map(x=>transposeAll(x, steps, max));
     return(result);
 }
 
-
+export default { strings, notes_sharps, triplets, interval, transpose, transpose_triplets, transposeAll};
 

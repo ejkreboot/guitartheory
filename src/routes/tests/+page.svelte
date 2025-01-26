@@ -92,6 +92,22 @@
           data-fillColors="black white orange"
           data-notes="1:gb4 2:c4 3:a3">
     </div>
+  
+    <p>We can overlay additional notes over a scale</p>
+  
+    <div class="fb-container"
+          data-frets=14
+          data-notes="a minor-blues"
+          data-radius=7
+          data-dotradius=6
+          data-colors="gray"
+          data-showNames="true"
+          data-fillColors="white"
+          data-overlay="1:g4 1:a4 2:e4 1:d5 2:c5"
+          data-overlayfillcolors="#f95e2e #f95e2e #f95e2e #80cbe0 #80cbe0"
+          data-overlaynamecolors="white white white black black">
+    </div>
+
     <p> Putting it all together now. A-minor blues scale. (Note custom dot radius and color)</p>
     <div class="fb-container"
           data-frets=14
@@ -103,6 +119,19 @@
           data-shownames=true
           data-colors="black"
           data-nameColors="white black black white black black black">
+    </div>
+
+    <p> And the c major scale)</p>
+    <div class="fb-container"
+          data-frets=14
+          data-notes="c major"
+          data-radius=7
+          data-dotradius=6
+          data-dotColor="#9d6038"
+          data-fillColors="#f94d30 white white white white white white"
+          data-shownames=true
+          data-colors="black"
+          data-nameColors="white black black black black black black">
     </div>
 
     <p>For note collections, one color can be specified per note rather than recycling</p>

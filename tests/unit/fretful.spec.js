@@ -28,6 +28,7 @@ describe('Frets', () => {
     })
 });
 
+
 describe('Transpostion', () => {
     const notes = "1:g4 2:d#4 3:c4";
     it('Transposes a note', () => {
@@ -43,3 +44,4 @@ describe('Transpostion', () => {
     });
  
 })
+
