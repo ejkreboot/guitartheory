@@ -21,7 +21,7 @@
 	"type": "module",
 	"dependencies": {
 		"d3-selection": "^3.0.0",
-		"fretboards": "github:ejkreboot/fretboards#note_name_data",
+		"fretboards": "github:ejkreboot/fretboards",
 		"install": "^0.13.0",
 		"npm": "^10.8.3",
 		"svelecte": "^4.4.1",
