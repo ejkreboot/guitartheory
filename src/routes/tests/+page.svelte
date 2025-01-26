@@ -1,5 +1,5 @@
 <script>
-    import * as fretboard from "/Users/erikor/fretboards/src/index.js"
+    import * as fretboard from "fretboards"
     import { onMount } from "svelte";
   
     onMount( () => {
