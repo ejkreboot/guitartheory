@@ -20,6 +20,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@sveltejs/adapter-vercel": "^5.5.3",
 		"d3-selection": "^3.0.0",
 		"fretboards": "github:ejkreboot/fretboards",
 		"install": "^0.13.0",
