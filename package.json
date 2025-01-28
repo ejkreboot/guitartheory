@@ -26,6 +26,7 @@
 		"install": "^0.13.0",
 		"npm": "^10.8.3",
 		"svelecte": "^4.4.1",
-		"vexchords": "^1.2.0"
+		"vexchords": "^1.2.0",
+		"vexflow": "^4.2.5"
 	}
 }

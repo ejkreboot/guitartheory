@@ -1,200 +1,113 @@
 <script>
-  //import * as fretboard from "fretboards";
-  import Triads from '$lib/Triads.svelte'
-  import { onMount } from "svelte";
-  import * as fretful from "$lib/fretful.js"
-
-  const major_top = fretful.triplets.major_triplets.top;
-  const minor_top = fretful.triplets.minor_triplets.top;
-
-  const major_triplets = {
-    strings_4_5_6: fretful.triplets.major_triplets.top,
-    strings_5_6_7: fretful.triplets.major_triplets.middle
-  };
-
-  const minor_triplets = {
-    strings_4_5_6: fretful.triplets.minor_triplets.top,
-    strings_5_6_7: fretful.triplets.minor_triplets.middle
-  };
-
-  const keys = [
-    { label: "C", value: 0 },
-    { label: "D", value: 2 },
-    { label: "E", value: 4 },
-    { label: "F", value: 5 },
-    { label: "G", value: 7 },
-    { label: "A", value: 9 },
-    { label: "B", value: 11 }
-  ];
-
-  const chromaticScale = ["C", "D♭", "D", "E♭", "E", "F", "G♭", "G", "A♭", "A", "B♭", "B"];
-
-  function getChordName(root, interval) {
-    const index = (root + interval) % 12;
-    return chromaticScale[index];
-  }
-
-  // Reactive variable for selected value
-  let selectedKey = keys[0].value;
-  $: selectedKeyName = getChordName(selectedKey, 0);
-  let selectedStrings = "strings_4_5_6";
-  let major_triads = []; // Initialize as empty
-  let modal_interchange_triads = []; // Initialize as empty
-
-  function updateTriads() {
-    // Clear the triads array (this removes components from the DOM)
-    major_triads = [];
-    modal_interchange_triads = [];
-    setTimeout(() => { // wait a tick to allow DOM to clear
-    major_triads = [
-        {
-          label: "Root",
-          chord: getChordName(selectedKey, 0),
-          scale: selectedKeyName + " major",
-          notes: fretful.transpose_triplets(major_triplets[selectedStrings], selectedKey).join(" ")
-        },
-        {
-          label: "Fourth",
-          chord: getChordName(selectedKey, 5),
-          scale: selectedKeyName + " major",
-          notes: fretful.transpose_triplets(major_triplets[selectedStrings], selectedKey + 5).join(" ")
-        },
-        {
-          label: "Fifth",
-          chord: getChordName(selectedKey, 7),
-          scale: selectedKeyName + " major",
-          notes: fretful.transpose_triplets(major_triplets[selectedStrings], selectedKey + 7).join(" ")
-        },
-        {
-          label: "Minor Sixth",
-          chord: getChordName(selectedKey, 9) + " minor",
-          scale: selectedKeyName + " major",
-          notes: fretful.transpose_triplets(minor_triplets[selectedStrings], selectedKey + 9).join(" ")
-        }
-      ];
-      modal_interchange_triads = [
-        {
-          label: "Minor Fourth",
-          chord: getChordName(selectedKey, 5),
-          scale: selectedKeyName + " major",
-          notes: fretful.transpose_triplets(minor_triplets[selectedStrings], selectedKey + 5).join(" ")
-        },
-        {
-          label: "Flat Sixth",
-          chord: getChordName(selectedKey, 8),
-          scale: selectedKeyName + " major",
-          notes: fretful.transpose_triplets(major_triplets[selectedStrings], selectedKey + 8).join(" ")
-        },
-        {
-          label: "Flat Seventh",
-          chord: getChordName(selectedKey, 10),
-          scale: selectedKeyName + " major",
-          notes: fretful.transpose_triplets(major_triplets[selectedStrings], selectedKey + 10).join(" ")
-        }
-      ];
-    }, 0);
-  }
-
-  $: if (selectedKey !== undefined && selectedStrings !== undefined) {
-    updateTriads();
-  }
-</script>
-
-<style>
-      /* some colors: #f95e2e #80cbe0 #faa336 #739afc */
-      @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
-
-      body {
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 700px;
-      }
-
-      h1, h2, h3, h4, p, label {
-        font-family: "Libre Baskerville", Helvetica;
-      }
-
-      p {
-        padding-top: 15px;
-        padding-bottom: 5px;
-        color:rgb(45, 118, 166);
-        line-height: 28px;
-      }
-
-      select {
-        font-size: 1rem;
-        padding: 0.2rem;
-        margin-bottom: 1rem;
-        margin-right: 20px;
-      }
-
-      .label {
-        font-family: "Nunito";
-        color: #404041;
-        text-transform: uppercase;
-        font-weight: 100;
-        font-size: 12px;
-      }
-
-      .triad {
-        padding-bottom: 20px;
-      }
-
-</style>
-
-<body>
-  <h1>Modal Interchange</h1>
-
-  <h3>Theory</h3>
-  <p>Recall that the chords in a major scale are:</p>
-  <pre style="font: Courier;">
-    I ii  iii IV V vi VII°
-  </pre>
-  <p>The chords of the parallel minor are:</p>
-  <pre style="font: Courier;">
-    i II° III♭ iv V VI♭ VII♭
-  </pre>
-  <p>Of which the iv, VI♭, and VII♭ chords are among the most commonly used.</p>
-
-  <h3>Example</h3>
-  <p>A very common chord progression is I - IV - V (sometimes with the minor 6th thrown in for good measure). 
-    The corresponding triads for the specified key are given below. Select a different key to see triads 
-    for that key.
-  </p>
-
-  <label for="key-select">Choose a key:</label>
-  <select id="key-select" bind:value={selectedKey} style="width: 50px;">
-    {#each keys as { label, value }}
-      <option value={value}>{label}</option>
-    {/each}
-  </select>
-
-  <label for="strings-select">Choose strings:</label>
-  <select id="strings-select" bind:value={selectedStrings} style="width: 150px;">
-    <option value="strings_4_5_6">Strings 4, 5, 6</option>
-    <option value="strings_5_6_7">Strings 5, 6, 7</option>
-  </select>
-
-  <div id="major_triads">
-    {#each major_triads as triad}
-    <div class="triad">
-      <b class="label">{triad.label} ({triad.chord}):</b>
-        <div>
-          <Triads scale={triad.scale} notes={triad.notes} />
-        </div>
+    // Add any functionality you might need here
+  </script>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap');
+  
+    body {
+      font-family: 'Libre Baskerville', serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa; /* Light gray background */
+      color: #333; /* Dark text for good contrast */
+      min-height: 100vh;
+    }
+  
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem 0;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+  
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+  
+    section {
+      margin-bottom: 2rem;
+    }
+  
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.5rem;
+    }
+  
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+  
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+  
+    .link-card {
+      flex: 1;
+      min-width: 200px;
+      padding: 1rem;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-decoration: none;
+      color: #333;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+  
+    .link-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+  
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+  
+  <body>
+  <header>
+    Guitar Tools
+  </header>
+  
+  <main>
+    <!-- Tools Section -->
+    <section>
+      <h2>Tools</h2>
+      <div class="links">
+        <a href="/notes" class="link-card">
+          🎸 Fretboard Note Trainer
+        </a>
       </div>
-    {/each}
-  </div>
-
-  <p>The common modal interchange triplets for this key are given below.</p>
-  <div id="modal_interchange">
-    {#each modal_interchange_triads as triad}
-      <div class="triad">
-        <b class="label">{triad.label} ({triad.chord}):</b>
-        <div>
-          <Triads scale={triad.scale} notes={triad.notes} />
-        </div>
+    </section>
+  
+    <!-- Theory Section -->
+    <section>
+      <h2>Theory</h2>
+      <div class="links">
+        <a href="/theory/modal_interchange" class="link-card">
+          🎵 Modal Interchange with Triads
+        </a>
       </div>
-    {/each}
-  </div>
+    </section>
+  </main>
+  
+  <footer>
+    &copy; {new Date().getFullYear()} Guitar Tools | Created with care
+  </footer>
 </body>

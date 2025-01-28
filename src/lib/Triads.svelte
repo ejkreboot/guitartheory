@@ -10,15 +10,15 @@
   
     let id = "fb_" + Math.floor(10000 * Math.random());
     onMount(() => {
-    console.log(notes.split(" "))
       const config = {
         frets: 15,
         fretWidth: 40,
         fretHeight: 18,
         where: "#" + id,
         showNames: true,
-        nameColors: "#999",
-        colors: "#999",
+        nameColors: "#777",
+        fillColors: "#ddd",
+        colors: "#ccc",
         radius: 7,
         overlayFillColors: ["#faa336", "#faa336", "#faa336", 
                             "#80cbe0", "#80cbe0","#80cbe0",
